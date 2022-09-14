@@ -1,5 +1,6 @@
 FROM debian:buster
 
+RUN echo -e "\033[0;32m wordpress docker: Setting up.... \033[0m"
 RUN apt-get update
 RUN apt-get -y install php7.3 php-mysqli php-fpm wget sendmail
 
@@ -13,3 +14,4 @@ RUN chmod +x /var/www/wordpress_start.sh
 ENTRYPOINT [ "/var/www/wordpress_start.sh" ]
 
 CMD ["/usr/sbin/php-fpm7.3", "--nodaemonize"]
+RUN echo -e "\033[0;32m wordpress docker: Is set up ! \033[0m \033[0m"
