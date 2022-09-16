@@ -1,18 +1,19 @@
-FROM debian:buster
+FROM alpine:3.13
 
-RUN echo -e "\033[0;32m nginx docker: Setting up.... \033[0m"
-RUN apt-get update
-RUN apt-get install -y nginx openssl
+RUN	apk update && apk upgrade && apk add --no-cache \
+        nginx \
+        openssl
 
-EXPOSE 443
+# nginx SSL
+RUN mkdir /etc/nginx/ssl
+RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
+        -out /etc/nginx/ssl/vchevill.pem \
+        -keyout /etc/nginx/ssl/vchevill.key \
+        -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=vchevill/CN=vchevill.42.fr/"
 
-COPY ./conf/default /etc/nginx/sites-enabled/default
-COPY ./tools/nginx_start.sh /var/www
+# nginx config
+RUN mkdir -p /run/nginx
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN chmod +x /var/www/nginx_start.sh
-
-ENTRYPOINT [ "var/www/nginx_start.sh" ]
-
-CMD ["nginx", "-g", "daemon off;"]
-
-RUN echo -e "\033[0;32m nginx docker: Is set up ! \033[0m"
+# Start nginx
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

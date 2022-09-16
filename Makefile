@@ -9,7 +9,7 @@ stop:
 	@ docker-compose -f srcs/docker-compose.yml down
 
 clean: stop
-	@docker stop $$(docker ps -qa);\
+	#@docker stop $$(docker ps -qa);\
 
 fullclean:
 	docker rm $$(docker ps -qa);\

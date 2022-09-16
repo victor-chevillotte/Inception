@@ -18,8 +18,11 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	cd /var/www/html;
 	wp core download --allow-root;
 	echo "Wordpress: Setup database connection..."
-	#mv ./wp-config.php /var/www/html/
-    wp config create --dbname=$WP_DATABASE_NAME --dbuser=$WP_DATABASE_USR --dbpass=$WP_DATABASE_PWD --dbhost=$MYSQL_HOST --dbcharset="utf8" --dbcollate="utf8_general_ci" --allow-root
+	sed -i 's/$WP_DATABASE_NAME/'$WP_DATABASE_NAME'/' /var/www/wp-config.php
+	sed -i 's/$WP_DATABASE_USR/'$WP_DATABASE_USR'/' /var/www/wp-config.php
+	sed -i 's/$WP_DATABASE_NAME/'$WP_DATABASE_PWD'/' /var/www/wp-config.php
+	sed -i 's/$WP_DATABASE_NAME/'$MYSQL_HOST'/' /var/www/wp-config.php
+    #wp config create --dbname=$WP_DATABASE_NAME --dbuser=$WP_DATABASE_USR --dbpass=$WP_DATABASE_PWD --dbhost=$MYSQL_HOST --dbcharset="utf8" --dbcollate="utf8_general_ci" 
 	echo "Wordpress: creating users..."
 	wp core install --allow-root --url=${DOMAIN_NAME} --title=${WP_TITLE} --admin_user=${WP_ADMIN_USR} --admin_password=${WP_ADMIN_PWD} --admin_email=${WP_ADMIN_EMAIL}
 	wp user create --allow-root ${WP_USER_LOGIN} ${WP_USER_EMAIL} --user_pass=${WP_USER_PASSWORD};
