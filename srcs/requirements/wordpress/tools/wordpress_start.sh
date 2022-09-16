@@ -18,6 +18,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	cd /var/www/html;
 	wp core download --allow-root;
 	echo "Wordpress: Setup database connection..."
+	echo "Wordpress: Editing wp-config.php..."
 	sed -i 's/$WP_DATABASE_NAME/'$WP_DATABASE_NAME'/' /var/www/wp-config.php
 	sed -i 's/$WP_DATABASE_USR/'$WP_DATABASE_USR'/' /var/www/wp-config.php
 	sed -i 's/$WP_DATABASE_PWD/'$WP_DATABASE_PWD'/' /var/www/wp-config.php

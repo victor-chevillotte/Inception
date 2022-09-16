@@ -9,10 +9,12 @@ RUN mkdir /etc/nginx/ssl
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
         -out /etc/nginx/ssl/vchevill.pem \
         -keyout /etc/nginx/ssl/vchevill.key \
-        -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=vchevill/CN=vchevill.42.fr/"
+        -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=vchevill/CN="$DOMAIN_NAME"/"
+
 
 # nginx config
 RUN mkdir -p /run/nginx
+RUN tools/nginx_start.sh
 COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Start nginx

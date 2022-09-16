@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
-#if [ ! -d "/run/mysqld" ]; then
+if [ ! -d "/run/mysqld" ]; then
 	mkdir -p /run/mysqld
 	chown -R mysql:mysql /run/mysqld
-#fi
+fi
 
-#if [ ! -d "/var/lib/mysql/mysql" ]; then
+if [ ! -d "/var/lib/mysql/mysql" ]; then
 	
 	echo "install DBBBBBB"
 	chown -R mysql:mysql /var/lib/mysql
@@ -39,7 +39,7 @@ EOF
 	# run init.sql
 	/usr/bin/mysqld --user=mysql --bootstrap < $tfile
 	rm -f $tfile
-#fi
+fi
 
 # allow remote connections
 sed -i "s|skip-networking|# skip-networking|g" /etc/my.cnf.d/mariadb-server.cnf
