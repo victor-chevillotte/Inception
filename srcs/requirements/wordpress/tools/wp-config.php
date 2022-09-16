@@ -39,6 +39,9 @@ define( 'DB_COLLATE', '' );
 
 define( 'WP_ALLOW_REPAIR', true );
 
+define( 'WP_HOME', 'https://$DOMAIN_NAME' );
+define( 'WP_SITEURL', 'https://$DOMAIN_NAME' );
+
 /**#@+
  * Authentication Unique Keys and Salts.
  *
