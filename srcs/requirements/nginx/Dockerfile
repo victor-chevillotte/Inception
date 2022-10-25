@@ -5,16 +5,12 @@ RUN	apk update && apk upgrade && apk add --no-cache \
         openssl
 
 # nginx SSL
-RUN mkdir /etc/nginx/ssl
-RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-        -out /etc/nginx/ssl/vchevill.pem \
-        -keyout /etc/nginx/ssl/vchevill.key \
-        -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=vchevill/CN="$DOMAIN_NAME"/"
+RUN		mkdir -p /etc/nginx/ssl
+RUN		openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:4096 -keyout /etc/nginx/ssl/vchevill.42.fr.key -out /etc/nginx/ssl/vchevill.42.fr.crt -subj /C=FR
 
 
 # nginx config
 RUN mkdir -p /run/nginx
-ENTRYPOINT [ "tools/nginx_start.sh" ]
 COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Start nginx

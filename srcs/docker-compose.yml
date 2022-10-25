@@ -1,44 +1,65 @@
 version: "3.5"
 
 networks:
-  app-network:
-    name: app-network
+  inceptionNetwork:
+    name: inceptionNetwork
     driver: bridge
 
 services:
   mariadb:
     container_name: mariadb
+    image: mariadb
     build: ./requirements/mariadb
     env_file:
       - .env
     volumes:
-      - "~/Bureau/inception/mariadb:/var/lib/mysql"
+      - "DB:/var/lib/mysql"
     networks:
-      - app-network
+      - inceptionNetwork
     restart: unless-stopped
 
   wordpress:
     container_name: wordpress
+    image: wordpress
     build: ./requirements/wordpress
     env_file:
       - .env
     depends_on:
       - mariadb
     volumes:
-      - "~/Bureau/inception/website:/var/www/html"
+      - "WordPress:/var/www/html"
     networks:
-      - app-network
+      - inceptionNetwork
     restart: unless-stopped
 
   nginx:
     container_name: nginx
+    image: nginx
     build: ./requirements/nginx
     ports:
       - "443:443"
     depends_on:
       - wordpress
     volumes:
-      - "~/Bureau/inception/website:/var/www/html"
+      - "WordPress:/var/www/html"
     networks:
-      - app-network
+      - inceptionNetwork
     restart: unless-stopped
+
+
+volumes:
+  DB:
+    name: DB
+    driver: local
+    driver_opts:
+      type: volume
+      device: "/home/vchevill/data/mariadb"
+      o: bind
+
+  WordPress:
+    name: WordPress
+    driver: local
+    driver_opts:
+      type: volume
+      device: "/home/vchevill/data/website"
+      o: bind

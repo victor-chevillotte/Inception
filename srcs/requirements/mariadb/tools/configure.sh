@@ -7,7 +7,7 @@ fi
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
 	
-	echo "install DBBBBBB"
+	echo "install DB"
 	chown -R mysql:mysql /var/lib/mysql
 
 	# init database
